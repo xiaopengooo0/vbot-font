@@ -7,10 +7,27 @@
         <button v-else class="refresh-button" @click="handleRefresh">刷新</button>
       </div>
     </div>
+
+    <!-- 验证码输入框 -->
+    <div class="capture-code-container">
+      <input type="text" v-model="captureCode" placeholder="请输入验证码(如果有)"  />
+    </div>
     <!-- 登录按钮 -->
     <div class="button-container">
       <button class="login-button" @click="handleLogin">登录</button>
     </div>
+
+    <!-- 登录结果显示 -->
+     <div class="login-result">
+      <p>登录结果：</p>
+      <span >{{ loginResult }}</span>
+    </div>
+
+          <!-- 报文显示 -->
+      <div class="login-result-message">
+        <p>响应报文：</p>
+        <span>{{ resJson }}</span>
+      </div>
   </div>
 </template>
 
@@ -21,20 +38,49 @@ import { ref } from 'vue'
 import {post} from "@/api/axios";
 
 const qrBase64 = ref('')
+const appid = ref('')
+const uuid = ref('')
+const captureCode = ref('')
+
+const loginResult = ref('')
+
+const resJson = ref('')
 
 const handleLogin = () => {
-  console.log("登录按钮被点击");
+  post('/api/v1/login/checkLogin', {
+    appid: appid.value,
+    uuid: uuid.value,
+    captureCode: captureCode.value
+  }).then((res:any) => {
+    resJson.value = JSON.stringify(res)
+    loginResult.value = res.msg
+    if (res.ret === 200&& res.data) {
+      console.log("登录成功")
+      loginResult.value = "登录成功"    
+    }
+  })
+  
 }
 
+
+/**
+ * 获取二维码
+ */
 const handleRefresh = () => {
-  post('/api/v1/login/getQrCode', {}).then((res) => {
+  post('/api/v1/login/getQrCode', {}).then((res:any) => {
+    // resJson.value = JSON.stringify(res)
     if (res.ret === 200) {
+      console.log("获取二维码成功")
       qrBase64.value = res.data.qrImgBase64
+      appid.value = res.data.appId
+      uuid.value = res.data.uuid
     } else {
       console.log("获取二维码失败")
     }
   })
 }
+
+
 </script>
 
 <style scoped>
@@ -83,6 +129,13 @@ const handleRefresh = () => {
   align-items: center;
   justify-content: center;
 }
+.capture-code-container{
+  margin-bottom: 20px;
+}
+.capture-code-container input {
+    height: 25px;
+    line-height: 25px;
+  }
 
 .button-container {
   text-align: center;
@@ -101,5 +154,27 @@ const handleRefresh = () => {
 
 .login-button:hover {
   background-color: #0056b3; /* 鼠标悬停时的背景色 */
+}
+
+
+.login-result {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  margin-bottom: 10px; /* 可选：设置底部间距 */
+}
+
+.login-result p {
+  margin: 0; /* 去除默认的段落间距 */
+   /* 设置文本和结果之间的间距 */
+   /* margin-right: 10px; */
+   margin-top: 10px;
+}
+
+/* .login-result span {
+  min-width: 60px;
+} */
+
+.login-result-message {
+  margin-top: 10px;  
 }
 </style>
