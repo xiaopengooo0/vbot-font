@@ -4,6 +4,6 @@ import HelloWorld from '../components/HelloWorld.vue'
 
 <template>
   <main>
-    <HelloWorld />
+    <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
   </main>
 </template>
