@@ -1,11 +1,19 @@
 <template>
+
+
+
+
     <el-aside class="side-layout" :class="{ 'is-collapsed': isCollapsed }">
+      <div class="logo-container" :class="{ 'is-collapsed': isCollapsed }">
+        <img v-if="!isCollapsed" src="@/assets/logo1.png" class="logo" alt="logo" />
+        <img v-else src="@/assets/logo.png" class="logo-small" alt="logo" />
+      </div>
       <el-menu
         default-active="2"
         class="el-menu-vertical"
         :collapse="isCollapsed"
         :collapse-transition="true"
-        close-on-click-outside=true
+        :close-on-click-outside=true
         :show-timeout="200"
         :hide-timeout="150"
       >
@@ -52,7 +60,6 @@ import {
 } from '@element-plus/icons-vue'
 import { useSideMenusStore } from '@/stores/side-menus'
 import { storeToRefs } from 'pinia'
-import { tr } from 'element-plus/es/locales.mjs'
 
 const sideMenuStore = useSideMenusStore()
 const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
@@ -60,12 +67,37 @@ const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
 
 <style scoped lang="scss">
 .side-layout {
-  transition: width 0.3s ease-out;
+  transition: width 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
   width: 200px;
   overflow: hidden;
 
   &.is-collapsed {
     width: 64px;
+  }
+}
+
+.logo-container {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--el-menu-bg-color);
+  border-bottom: 1px solid var(--el-border-color-light);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.34, 1.23, 0.64, 1);
+
+  .logo {
+    height: 32px;
+    max-width: 180px;
+    object-fit: contain;
+    transition: all 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
+  }
+  
+  .logo-small {
+    height: 30px;
+    width: 30px;
+    object-fit: contain;
+    transition: all 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
   }
 }
 
@@ -81,7 +113,15 @@ const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
   transition: width 0.15s ease; /* 平滑过渡效果 */
 }
 
+:deep(.el-menu) {
+  border-right: none;
+}
 
+:deep(.el-menu--collapse) {
+  width: 64px;
+}
 
-
+:deep(.el-menu:not(.el-menu--collapse)) {
+  width: 200px;
+}
 </style>

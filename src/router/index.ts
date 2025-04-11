@@ -40,25 +40,25 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
-  // 设置页面标题
-  document.title = `${to.meta.title || '系统'}`
+// router.beforeEach((to, from, next) => {
+//   // 设置页面标题
+//   document.title = `${to.meta.title || '系统'}`
   
-  // 检查是否需要登录验证
-  if (to.matched.some(record => record.meta.requiresAuth !== false)) {
-    // 这里添加实际的登录验证逻辑
-    const isAuthenticated = localStorage.getItem('token')
-    if (!isAuthenticated) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
-})
+//   // 检查是否需要登录验证
+//   if (to.matched.some(record => record.meta.requiresAuth !== false)) {
+//     // 这里添加实际的登录验证逻辑
+//     const isAuthenticated = localStorage.getItem('token')
+//     if (!isAuthenticated) {
+//       next({
+//         path: '/login',
+//         query: { redirect: to.fullPath }
+//       })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

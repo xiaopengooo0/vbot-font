@@ -60,14 +60,18 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { post } from '@/api/axios'
 
 const router = useRouter()
 const loading = ref(false)
 const rememberMe = ref(false)
 const loginFormRef = ref<FormInstance>()
+
+const token  = useUserStore()
 
 const loginForm = reactive({
   username: '',
@@ -92,17 +96,34 @@ const handleLogin = async () => {
     loading.value = true
     await loginFormRef.value.validate()
     
-    // TODO: 这里添加实际的登录逻辑
-    // 模拟登录成功
-    setTimeout(() => {
-      ElMessage.success('登录成功')
-      router.push('/')
-    }, 1000)
-  } catch (error) {
-    console.error('登录验证失败:', error)
-  } finally {
-    loading.value = false
-  }
+    post('/login/admin', {
+      username: loginForm.username,
+      password: loginForm.password
+    }).then((res:any) => {
+      if (res.ret === 200) {
+        ElMessage({
+          message: '登录成功',
+          type: 'success',
+          duration: 1000,
+          showClose: true,
+          onClose: () => {
+            router.push('/')
+          }
+        })
+
+        token.setToken(res.data)
+
+
+      } else {
+        ElMessage.error('登录失败')
+      }
+    })
+
+    } catch (error) {
+      console.error('登录验证失败:', error)
+    } finally {
+      loading.value = false
+    }
 }
 </script>
 
@@ -123,7 +144,7 @@ const handleLogin = async () => {
     height: 200%;
     top: -50%;
     left: -50%;
-    background: radial-gradient(circle, rgba(138, 125, 121, 0.8) 0%, rgba(240,242,245,0.8) 100%);
+    background: radial-gradient(circle, rgba(243, 206, 206, 0.8) 0%, rgba(240,242,245,0.8) 100%);
     animation: rotate 30s linear infinite;
   }
 }
