@@ -36,7 +36,7 @@ const SystemLayout = defineComponent({
 }
 
 .el-header {
-  background-color: #409eff;
+  background-color: #30b0b4;
   color: white;
   text-align: center;
   line-height: 60px;
@@ -44,7 +44,7 @@ const SystemLayout = defineComponent({
 }
 
 .el-main {
-  background-color: green;
+  background-color: rgb(214, 207, 208);
   padding: 20px;
 
 }

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Index from '../views/Index.vue'
+import { useAppStore } from '@/stores/app'
+
 
 
 const router = createRouter({
@@ -22,7 +24,29 @@ const router = createRouter({
       meta: {
         title: '首页',
         requiresAuth: true
-      }
+      },
+      children: [
+        {
+          name:'系统管理',
+          path: '',
+          component: null,
+          meta: {
+            title: '系统管理',
+            requiresAuth: true
+          },
+          children:[
+            {
+              name:'用户管理',
+              path: '/sys/user',
+              meta: {
+                title: '用户管理',
+                requiresAuth: true
+              },
+              component: () => import('@/views/system/user/index.vue'),
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/about',
@@ -40,25 +64,34 @@ const router = createRouter({
 })
 
 // 路由守卫
-// router.beforeEach((to, from, next) => {
-//   // 设置页面标题
-//   document.title = `${to.meta.title || '系统'}`
+router.beforeEach((to, from, next) => {
+  // 设置页面标题
+  const appStore = useAppStore()
+  document.title = `${to.meta.title || '系统'}`
   
-//   // 检查是否需要登录验证
-//   if (to.matched.some(record => record.meta.requiresAuth !== false)) {
-//     // 这里添加实际的登录验证逻辑
-//     const isAuthenticated = localStorage.getItem('token')
-//     if (!isAuthenticated) {
-//       next({
-//         path: '/login',
-//         query: { redirect: to.fullPath }
-//       })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+  // 检查是否需要登录验证
+  // if (to.matched.some(record => record.meta.requiresAuth !== false)) {
+  //   // 这里添加实际的登录验证逻辑
+  //   const isAuthenticated = localStorage.getItem('token')
+  //   if (!isAuthenticated) {
+  //     next({
+  //       path: '/login',
+  //       query: { redirect: to.fullPath }
+  //     })
+  //   } else {
+  //     next()
+  //   }
+  // } else {
+  //   next()
+  // }
+  if (to.meta.title) {
+    appStore.addTab({
+      title: to.meta.title as string,
+      path: to.path
+    })
+  }
+
+  next()
+})
 
 export default router

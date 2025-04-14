@@ -5,17 +5,31 @@
                 <Fold v-if="!isCollapsed" />
                 <Expand v-else />
             </el-icon>
+
+
+            <PageHeader  />
+
+
             <div class="header-content">
-                Header
+                <!-- Header -->
             </div>
+
+
         </div>
     </el-header>
 </template>
 
 <script setup lang="ts">
+
+
+const HeaderLayout = defineComponent({
+    name: 'HeaderLayout'
+})
+
 import { Fold, Expand } from '@element-plus/icons-vue'
 import { useSideMenusStore } from '@/stores/side-menus'
 import { storeToRefs } from 'pinia'
+import { defineComponent, ref } from 'vue'
 
 const sideMenuStore = useSideMenusStore()
 const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
@@ -23,6 +37,8 @@ const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
 const toggleSideMenu = () => {
     sideMenuStore.toggleCollapsed()
 }
+
+
 </script>
 
 <style scoped lang="scss">
@@ -45,6 +61,13 @@ const toggleSideMenu = () => {
 .header-content {
     flex: 1;
     text-align: center;
+}
+
+.page-header {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
 }
 </style>
 

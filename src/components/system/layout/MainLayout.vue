@@ -1,30 +1,75 @@
 <template>
-    <el-main>Main
-
-        <el-button type="primary" @click="click">消息</el-button>
-
-    </el-main>
+  <div class="main-layout">
+    <div class="main-header">
+      <tabs-view />
+    </div>
+    <div class="main-content">
+      <router-view v-slot="{ Component }">
+        <transition name="fade-transform" mode="out-in">
+          <keep-alive :include="cachedViews">
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
+      </router-view>
+    </div>
+  </div>
 </template>
 
-
 <script setup lang="ts">
-import { defineComponent } from 'vue';
-import { getCurrentInstance } from 'vue'
-import { ElMessage } from 'element-plus'
+import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAppStore } from '@/stores/app'
 
+const route = useRoute()
+const appStore = useAppStore()
 
-const MainLayout=defineComponent({
-    name: 'MainLayout'
-})
+// 监听路由变化，更新面包屑数据
+watch(
+  () => route.path,
+  () => {
+    appStore.updateBreadcrumb(route)
+  },
+  { immediate: true }
+)
 
-const click = () => {
-    ElMessage({
-    message: 'This is a message.',
-    grouping: true,
-    type: 'success',
-  })
+// 缓存的视图
+const cachedViews = computed(() => appStore.cachedViews)
+</script>
+
+<style scoped lang="scss">
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  .main-header {
+    background-color: var(--el-bg-color);
+    border-bottom: 1px solid var(--el-border-color-light);
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 16px;
+    overflow: auto;
+    background-color: var(--el-bg-color-page);
+  }
 }
 
-</script>
+// 路由切换动画
+.fade-transform-enter-active,
+.fade-transform-leave-active {
+  transition: all 0.3s;
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>
 
 

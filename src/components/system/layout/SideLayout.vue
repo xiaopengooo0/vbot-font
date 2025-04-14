@@ -9,27 +9,24 @@
         <img v-else src="@/assets/logo.png" class="logo-small" alt="logo" />
       </div>
       <el-menu
-        default-active="2"
+        default-active="1-1"
         class="el-menu-vertical"
         :collapse="isCollapsed"
         :collapse-transition="true"
-        :close-on-click-outside=true
-        :show-timeout="200"
+        :show-timeout="300"
         :hide-timeout="150"
+        router
       >
         <el-sub-menu index="1">
           <template #title>
             <el-icon><location /></el-icon>
-            <span>Navigator One</span>
+            <span>系统管理</span>
           </template>
-          <el-menu-item-group>
-            <template #title><span>Group One</span></template>
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
+
+            <el-menu-item index="/sys/user">用户管理</el-menu-item>
+            <el-menu-item index="1-2">角色管理</el-menu-item>
+            <el-menu-item index="1-3">权限管理</el-menu-item>
+
           <el-sub-menu index="1-4">
             <template #title><span>item four</span></template>
             <el-menu-item index="1-4-1">item one</el-menu-item>

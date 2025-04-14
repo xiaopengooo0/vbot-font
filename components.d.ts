@@ -8,9 +8,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CollapseCard: typeof import('./src/components/common/CollapseCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElCollapse: typeof import('element-plus/es')['ElCollapse']
+    ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -21,13 +27,28 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
     HeaderLayout: typeof import('./src/components/system/layout/HeaderLayout.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MainLayout: typeof import('./src/components/system/layout/MainLayout.vue')['default']
+    PageHeader: typeof import('./src/components/common/PageHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideLayout: typeof import('./src/components/system/layout/SideLayout.vue')['default']
     SystemLayout: typeof import('./src/components/system/layout/SystemLayout.vue')['default']
+    TabsView: typeof import('./src/components/common/TabsView.vue')['default']
+    User: typeof import('./src/components/system/permission/User.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
