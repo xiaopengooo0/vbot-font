@@ -1,8 +1,8 @@
 <template>
-  <div class="permission-container">
+  <div class="list-container">
     <!-- 搜索栏 -->
-    <div class="search-bar">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+    <collapse-card collapsed-text="查询区">
+      <el-form :inline="true" :model="searchForm" class="search-form">
         <el-form-item label="权限名称">
           <el-input v-model="searchForm.name" placeholder="请输入权限名称" clearable />
         </el-form-item>
@@ -18,7 +18,7 @@
           <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </collapse-card>
 
     <!-- 操作按钮 -->
     <div class="operation-bar">
@@ -278,15 +278,5 @@ const getPermissionTypeText = (type: number) => {
 </script>
 
 <style scoped>
-.permission-container {
-  padding: 20px;
-}
-
-.search-bar {
-  margin-bottom: 20px;
-}
-
-.operation-bar {
-  margin-bottom: 20px;
-}
+@import '@/assets/list.scss';
 </style> 

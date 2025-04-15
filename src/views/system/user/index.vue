@@ -1,5 +1,5 @@
 <template>
-  <div class="user-container">
+  <div class="list-container">
     <!-- 搜索区域 -->
     <collapse-card collapsed-text="查询区">
       <el-form :model="searchForm" ref="searchFormRef" :inline="true" class="search-form">
@@ -198,38 +198,5 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <style scoped lang="scss">
-.user-container {
-  // padding: 20px;
-  
-  .search-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    
-    :deep(.el-form-item) {
-      margin-bottom: 0;
-    }
-  }
-  
-  .table-card {
-    margin-top: 8px;
-    
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      
-      .header-title {
-        font-size: 16px;
-        font-weight: bold;
-      }
-    }
-  }
-  
-  .pagination-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
+@import '@/assets/list.scss';
 </style> 

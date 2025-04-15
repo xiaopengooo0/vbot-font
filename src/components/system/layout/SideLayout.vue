@@ -69,8 +69,13 @@ const activeMenu = computed(() => {
 
 // 菜单选择处理
 const handleSelect = (path: string) => {
+  // 如果当前路由已经是目标路由，则不进行跳转
+  if (route.path === path) return
+  
   // 更新当前激活的标签页
   appStore.setActiveTab(path)
+  // 直接使用 router.push 而不是 replace，因为 replace 会导致页面重新加载
+  router.push(path)
 }
 </script>
 

@@ -6,9 +6,11 @@
     <div class="main-content">
       <router-view v-slot="{ Component }">
         <transition name="fade-transform" mode="out-in">
+        <Suspense>
           <keep-alive :include="cachedViews">
-            <component :is="Component" />
+            <component :is="Component" :key="route.path" />
           </keep-alive>
+        </Suspense>
         </transition>
       </router-view>
     </div>
@@ -59,20 +61,20 @@ const cachedViews = computed(() => appStore.cachedViews)
 }
 
 // 路由切换动画
-.fade-transform-enter-active,
-.fade-transform-leave-active {
-  transition: all 0.3s;
-}
+// .fade-transform-enter-active,
+// .fade-transform-leave-active {
+//   transition: all 0.2s;
+// }
 
-.fade-transform-enter-from {
-  opacity: 0;
-  transform: translateX(-30px);
-}
+// .fade-transform-enter-from {
+//   opacity: 0;
+//   transform: translateX(-10px);
+// }
 
-.fade-transform-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
+// .fade-transform-leave-to {
+//   opacity: 0;
+//   transform: translateX(10px);
+// }
 </style>
 
 
