@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { RouteLocationNormalized } from 'vue-router'
+import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 
 interface Tab {
   title: string
@@ -21,7 +21,9 @@ export const useAppStore = defineStore('app', {
     ] as Tab[],
     cachedViews: [] as string[],
     activeTab: '' as string,
-    breadcrumb: [] as BreadcrumbItem[]
+    breadcrumb: [] as BreadcrumbItem[],
+    hasLoadedDynamicRoutes: false,
+    dynamicRoutes: [] as RouteRecordRaw[]
   }),
   
   actions: {
@@ -69,12 +71,33 @@ export const useAppStore = defineStore('app', {
           path: item.path
         }))
       }
-    }
+    },
+    setRoutes(routes: RouteRecordRaw[]) {
+      this.dynamicRoutes = routes
+    },
+    addRoute(route: RouteRecordRaw) {
+      this.dynamicRoutes.push(route)
+    },
+    setHasLoadedDynamicRoutes(loaded: boolean) {
+      this.hasLoadedDynamicRoutes = loaded
+    },
+
   },
   getters: {
     getTabs: (state) => {
       return state.tabs
     },
-    
+    getBreadcrumb: (state) => {
+      return state.breadcrumb
+    },
+    getActiveTab: (state) => {
+      return state.activeTab
+    },
+    getDynamicRoutes: (state) => {
+      return state.dynamicRoutes
+    },
+    getHasLoadedDynamicRoutes: (state) => {
+      return state.hasLoadedDynamicRoutes
+    }
   }
 }) 

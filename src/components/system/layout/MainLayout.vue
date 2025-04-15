@@ -23,11 +23,14 @@ import { useAppStore } from '@/stores/app'
 const route = useRoute()
 const appStore = useAppStore()
 
-// 监听路由变化，更新面包屑数据
+// 监听路由变化，更新面包屑和标签页
 watch(
   () => route.path,
-  () => {
+  (path) => {
+    // 更新面包屑
     appStore.updateBreadcrumb(route)
+    // 更新当前激活的标签页
+    appStore.setActiveTab(path)
   },
   { immediate: true }
 )

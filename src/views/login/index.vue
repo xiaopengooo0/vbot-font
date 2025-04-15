@@ -104,15 +104,14 @@ const handleLogin = async () => {
         ElMessage({
           message: '登录成功',
           type: 'success',
-          duration: 1000,
+          duration: 2000,
           showClose: true,
           onClose: () => {
             router.push('/')
           }
         })
-
         token.setToken(res.data)
-
+        localStorage.setItem('token', res.data)
 
       } else {
         ElMessage.error('登录失败')

@@ -7,6 +7,7 @@ export const useUserStore = defineStore("user", {
     return {
       userInfo: {},
       token: "",
+      permission: []
     };
   },
   actions: {
@@ -16,6 +17,9 @@ export const useUserStore = defineStore("user", {
     setToken(token: string) {
       this.token = token;
     },
+    setPermission(permission: any) {
+      this.permission = permission;
+    },
   },
   getters: {
     getUserInfo: (state) => {
@@ -23,6 +27,9 @@ export const useUserStore = defineStore("user", {
     },
     getToken: (state) => {
       return state.token;
+    },
+    getPermission: (state) => {
+      return state.permission;
     },
   },
 });
