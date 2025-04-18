@@ -2,7 +2,7 @@
   <div class="page-header">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="index" :to="item.path || undefined">
-        <span :class="{ 'no-link': !item.path }">{{ item.title }}</span>
+        <span :class="{ 'no-link': !item.path||!item.isLink }">{{ item.title }}</span>
       </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
@@ -20,6 +20,8 @@ const PageHeader = defineComponent({
 
 // 从 store 中获取面包屑数据
 const breadcrumb = computed(() => appStore.breadcrumb)
+console.log(breadcrumb.value);
+
 </script>
 
 <style scoped lang="scss">

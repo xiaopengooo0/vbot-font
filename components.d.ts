@@ -53,7 +53,6 @@ declare module 'vue' {
     SideLayout: typeof import('./src/components/system/layout/SideLayout.vue')['default']
     SystemLayout: typeof import('./src/components/system/layout/SystemLayout.vue')['default']
     TabsView: typeof import('./src/components/common/TabsView.vue')['default']
-    User: typeof import('./src/components/system/permission/User.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

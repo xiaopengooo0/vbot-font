@@ -21,13 +21,19 @@
     <!-- </div> -->
     </collapse-card>
 
-    <!-- 操作按钮 -->
-    <div class="operation-bar">
-      <el-button type="primary" @click="handleAdd">新增角色</el-button>
-      <el-button type="danger" :disabled="!selectedRoles.length" @click="handleBatchDelete">
-        批量删除
-      </el-button>
-    </div>
+        <!-- 表格区域 -->
+    <el-card class="table-card">
+
+        <template #header>
+        <div class="card-header">
+          <span class="header-title">用户列表</span>
+          <div class="operation-bar">
+            <el-button type="primary" @click="handleAdd">
+              <el-icon><Plus /></el-icon>新增
+            </el-button>
+          </div>
+        </div>
+      </template>
 
     <!-- 表格 -->
     <el-table
@@ -58,8 +64,9 @@
       </el-table-column>
     </el-table>
 
+
     <!-- 分页 -->
-    <div class="pagination">
+    <div class="pagination-container">
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
@@ -70,6 +77,7 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    </el-card>
 
     <!-- 新增/编辑对话框 -->
     <el-dialog
@@ -133,6 +141,7 @@
 import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
+import {Plus} from '@element-plus/icons-vue'
 
 interface Role {
   id: string
@@ -275,6 +284,6 @@ const handlePermissionSubmit = () => {
 }
 </script>
 
-<style scoped>
-@import '@/assets/list.scss';
+<style scoped lang="scss">
+@use '@/assets/list.scss';
 </style> 

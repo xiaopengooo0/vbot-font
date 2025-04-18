@@ -21,14 +21,27 @@
     </collapse-card>
 
     <!-- 操作按钮 -->
-    <div class="operation-bar">
+    <!-- <div class="operation-bar">
       <el-button type="primary" @click="handleAdd">新增权限</el-button>
       <el-button type="danger" :disabled="!selectedPermissions.length" @click="handleBatchDelete">
         批量删除
       </el-button>
-    </div>
+    </div> -->
 
-    <!-- 表格 -->
+    <!-- 表格区域 -->
+    <el-card class="table-card">
+      <template #header>
+        <div class="card-header">
+          <span class="header-title">权限列表</span>
+          <div class="operation-bar">
+          <el-button type="primary" @click="handleAdd"><el-icon><Plus /></el-icon>新增权限</el-button>
+          <el-button type="danger" :disabled="!selectedPermissions.length" @click="handleBatchDelete">
+            <el-icon><Delete /></el-icon>批量删除
+          </el-button>
+          </div>
+        </div>
+      </template>
+
     <el-table
       v-loading="loading"
       :data="permissionList"
@@ -67,6 +80,19 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="pagination-container">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+    </div>
+      </el-card>
 
     <!-- 新增/编辑对话框 -->
     <el-dialog
@@ -127,9 +153,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, defineComponent } from 'vue'
+import {Plus, Delete} from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
+
+
+const Permission = defineComponent({
+  name: 'Permission',
+})
+
 
 interface Permission {
   id: string
@@ -155,6 +188,11 @@ const searchForm = reactive({
 const loading = ref(false)
 const permissionList = ref<Permission[]>([])
 const selectedPermissions = ref<Permission[]>([])
+
+// 分页
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(100)
 
 // 对话框
 const dialogVisible = ref(false)
@@ -275,8 +313,20 @@ const getPermissionTypeText = (type: number) => {
   }
   return typeMap[type] || '未知'
 }
+
+// 分页方法
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  handleSearch()
+}
+
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  handleSearch()
+}
+
 </script>
 
-<style scoped>
-@import '@/assets/list.scss';
+<style scoped lang="scss">
+@use '@/assets/list.scss';
 </style> 

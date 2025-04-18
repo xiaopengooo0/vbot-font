@@ -27,7 +27,7 @@ const goHome = () => {
 }
 
 const goBack = () => {
-  router.back()
+  router.go(-1);
 }
 </script>
 

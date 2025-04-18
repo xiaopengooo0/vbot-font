@@ -31,9 +31,11 @@
       <template #header>
         <div class="card-header">
           <span class="header-title">用户列表</span>
+          <div class="operation-bar">
           <el-button type="primary" @click="handleAdd">
-            <el-icon><Plus /></el-icon>新增用户
+            <el-icon><Plus /></el-icon>新增
           </el-button>
+          </div>
         </div>
       </template>
 
@@ -198,5 +200,5 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/list.scss';
+@use '@/assets/list.scss';
 </style> 

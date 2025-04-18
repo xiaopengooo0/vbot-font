@@ -9,7 +9,6 @@
         class="el-menu-vertical"
         :collapse="isCollapsed"
         :collapse-transition="true"
-        :show-timeout="300"
         :hide-timeout="150"
         router
         @select="handleSelect"

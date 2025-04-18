@@ -9,6 +9,7 @@ interface Tab {
 interface BreadcrumbItem {
   title: string
   path: string
+  isLink: boolean 
 }
 
 export const useAppStore = defineStore('app', {
@@ -68,7 +69,8 @@ export const useAppStore = defineStore('app', {
           .filter(item => item.meta && item.meta.title)
         .map(item => ({
           title: item.meta.title as string,
-          path: item.path
+          path: item.path,
+          isLink: item.meta.isLink as boolean 
         }))
       }
     },
@@ -92,12 +94,6 @@ export const useAppStore = defineStore('app', {
     },
     getActiveTab: (state) => {
       return state.activeTab
-    },
-    getDynamicRoutes: (state) => {
-      return state.dynamicRoutes
-    },
-    getHasLoadedDynamicRoutes: (state) => {
-      return state.hasLoadedDynamicRoutes
     }
   }
 }) 

@@ -23,11 +23,12 @@ const router = createRouter({
       component: Index,
       meta: {
         title: '首页',
-        requiresAuth: true
+        requiresAuth: true,
+        isLink: true
       },
     },
     {
-      path: '/:pathMatch(.*)*',
+      path: '/404',
       name: 'NotFound',
       component: () => import('@/views/error/Error404.vue'),
       meta: {
@@ -52,7 +53,7 @@ export const loadDynamicRoutes = async () => {
       // 将动态路由添加到index的子路由中
       dynamicRoutes.forEach(route => {
         // 先移除可能存在的同名路由
-        router.removeRoute(route.name as string)
+        // router.removeRoute(route.name as string)
         // 添加新路由
         router.addRoute('index', route)
       })
@@ -72,11 +73,12 @@ const fetchUserRoutes = async () => {
   return [
     {
       name: '系统管理',
-      path: '/sys',
+      path: '',
       component: null,
       meta: {
         title: '系统管理',
-        requiresAuth: true
+        requiresAuth: true,
+        isLink: false
       },
       children: [
         {
@@ -161,8 +163,20 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
+
+    // 页面刷新重新添加动态路由信息
+    if (!to.name) {
+      // 动态添加路由
+      await loadDynamicRoutes();
+      next({ ...to, replace: true });
+    }
+
     // 对于不需要认证的路由（如404、登录页），直接放行
-    next()
+    if (!to.matched.length) {
+      next({ name: 'NotFound' }); // 正常跳转到 404 页面
+    } else {
+      next();
+    }
   }
 })
 
