@@ -22,7 +22,7 @@
             </template>
             <template v-for="child in route.children" :key="child.path">
               <el-menu-item :index="child.path">
-                <!-- <el-icon v-if="child.meta?.icon"><component :is="child.meta.icon" /></el-icon> -->
+                <el-icon v-if="child.meta?.icon"><component :is="child.meta.icon" /></el-icon>
                 <span>{{ child.name }}</span>
               </el-menu-item>
             </template>
@@ -43,12 +43,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useSideMenusStore } from '@/stores/side-menus'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
+
 
 const sideMenuStore = useSideMenusStore()
 const { getCollapsed: isCollapsed } = storeToRefs(sideMenuStore)
@@ -58,6 +53,7 @@ const appStore = useAppStore()
 
 // 获取路由配置
 const routes = computed(() => {
+  console.log(appStore.dynamicRoutes);
   return appStore.dynamicRoutes
 })
 

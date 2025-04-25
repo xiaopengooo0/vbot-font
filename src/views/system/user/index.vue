@@ -50,11 +50,15 @@
         <el-table-column prop="nickname" label="昵称" min-width="120" show-overflow-tooltip />
         <el-table-column prop="phone" label="手机号" min-width="120" show-overflow-tooltip />
         <el-table-column prop="email" label="邮箱" min-width="180" show-overflow-tooltip />
-        <el-table-column prop="role" label="角色" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="role" label="角色" min-width="120" show-overflow-tooltip >
+          <template #default="{ row }">
+            <el-tag v-for="role in row.roles" :key="role.id" type="success">{{ role.name }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态" width="100" align="center">
           <template #default="{ row }">
-            <el-tag :type="row.status === '1' ? 'success' : 'danger'">
-              {{ row.status === '1' ? '启用' : '禁用' }}
+            <el-tag :type="row.status === 0 ? 'success' : 'danger'">
+              {{ row.status === 0 ? '启用' : '禁用' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -101,6 +105,8 @@ import { Search, Refresh, Plus, Edit, Key, Switch } from '@element-plus/icons-vu
 import { ElMessage, ElMessageBox } from 'element-plus'
 import CollapseCard from '@/components/common/CollapseCard.vue'
 
+import { post } from '@/api/axios'
+
 // 搜索表单
 const searchFormRef = ref()
 const searchForm = reactive({
@@ -128,12 +134,27 @@ const tableData = ref([
 // 分页
 const currentPage = ref(1)
 const pageSize = ref(10)
-const total = ref(100)
+const total = ref(10)
+
+onMounted(() => {
+  handleSearch()
+})
 
 // 搜索方法
 const handleSearch = () => {
   // TODO: 实现搜索逻辑
   console.log('搜索条件：', searchForm)
+
+  post('/admin/user/list', {
+    query: searchForm,
+    page: {
+      pageNo: currentPage.value,
+      pageSize: pageSize.value
+    }
+  }).then((res:any) => {
+    tableData.value = res.data.records
+    // console.log(res);
+  })
 }
 
 // 重置搜索

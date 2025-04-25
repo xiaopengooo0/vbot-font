@@ -2,23 +2,37 @@
 import { defineStore } from "pinia";
 
 
+interface UserInfo {
+    id: string;
+    username: string;
+    nickname: string;
+    avatar: string;
+    email: string;
+    phone: string;
+}
+
+
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
       userInfo: {},
       token: "",
-      permission: []
+      roles: [],
+      permissions: []
     };
   },
   actions: {
-    setUserInfo(userInfo: any) {
+    setUserInfo(userInfo: UserInfo) {
       this.userInfo = userInfo;
     },
     setToken(token: string) {
       this.token = token;
     },
-    setPermission(permission: any) {
-      this.permission = permission;
+    setPermissions(permissions: []) {
+      this.permissions = permissions;
+    },
+    setRoles(roles: []) {
+      this.roles = roles;
     },
   },
   getters: {
@@ -28,8 +42,12 @@ export const useUserStore = defineStore("user", {
     getToken: (state) => {
       return state.token;
     },
-    getPermission: (state) => {
-      return state.permission;
+    getPermissions: (state) => {
+      return state.permissions;
+    },
+    getRoles: (state) => {
+      return state.roles;
     },
   },
 });
+

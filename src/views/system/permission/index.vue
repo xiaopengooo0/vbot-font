@@ -233,7 +233,7 @@ const resetSearch = () => {
   handleSearch()
 }
 
-const handleAdd = (row?: Permission) => {
+const handleAdd = (event?: MouseEvent, row?: Permission) => {
   dialogType.value = 'add'
   dialogVisible.value = true
   form.parentId = row?.id || ''
@@ -296,8 +296,8 @@ const handleSubmit = async () => {
   })
 }
 
-const getPermissionTypeTag = (type: number) => {
-  const typeMap: Record<number, string> = {
+const getPermissionTypeTag = (type: number): 'success' | 'warning' | 'info' | 'primary' | 'danger' => {
+  const typeMap: Record<number, 'success' | 'warning' | 'info' | 'primary' | 'danger'> = {
     1: 'success',
     2: 'warning',
     3: 'info'

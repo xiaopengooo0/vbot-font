@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import Index from '../views/Index.vue'
 import { useAppStore } from '@/stores/app'
+import { post } from '@/api/axios'
 
 
 
@@ -45,8 +46,9 @@ export const loadDynamicRoutes = async () => {
   try {
     const userRoutes = await fetchUserRoutes()
     const appStore = useAppStore()
-    const dynamicRoutes = transformRoutes(userRoutes)
-    
+    var dynamicRoutes = transformRoutes(userRoutes)
+
+    // console.log(dynamicRoutes);
     // 获取index路由
     const indexRoute = router.getRoutes().find(route => route.name === 'index')
     if (indexRoute) {
@@ -54,11 +56,19 @@ export const loadDynamicRoutes = async () => {
       dynamicRoutes.forEach(route => {
         // 先移除可能存在的同名路由
         // router.removeRoute(route.name as string)
+
         // 添加新路由
-        router.addRoute('index', route)
+          router.addRoute('index', route)
+
       })
     }
-    
+
+    //左侧菜单隐藏路由设置
+    dynamicRoutes = dynamicRoutes.map(route => ({
+      ...route,
+      children: route.children?.filter(child => child.name !== 'Profile')
+    })) as RouteRecordRaw[]
+
     appStore.setRoutes(dynamicRoutes)
     return dynamicRoutes
   } catch (error) {
@@ -70,57 +80,34 @@ export const loadDynamicRoutes = async () => {
 // 从后端获取用户路由配置
 const fetchUserRoutes = async () => {
   // TODO: 实现实际的API调用
-  return [
-    {
-      name: '系统管理',
-      path: '',
-      component: null,
-      meta: {
-        title: '系统管理',
-        requiresAuth: true,
-        isLink: false
-      },
-      children: [
-        {
-          path: '/sys/role',
-          name: '角色管理',
-          component: () => import('@/views/system/role/index.vue'),
-          meta: {
-            title: '角色管理',
-            requiresAuth: true,
-            icon: 'User'
-          }
-        },
-        {
-          path: '/sys/user',
-          name: '用户管理',
-          component: () => import('@/views/system/user/index.vue'),
-          meta: {
-            title: '用户管理',
-            requiresAuth: true,
-            icon: 'User'
-          }
-        },
-        {
-          path: '/sys/permission',
-          name: '菜单管理',
-          component: () => import('@/views/system/permission/index.vue'),
-          meta: {
-            title: '菜单管理',
-            requiresAuth: true
-          }
-        }
-      ]
-    }
-  ]
+
+  const res = await post('/admin/getMenus').then(res => {
+    console.log(res);
+    return res.data
+  }).catch(err => {
+    console.log(err);
+    return []
+  })
+
+  return res
 }
 
 // 转换路由配置
 const transformRoutes = (routes: any[]): RouteRecordRaw[] => {
-  return routes.map(route => ({
+
+  const modules = import.meta.glob('../views/**/*.{vue,tsx}')
+
+  return routes.map(route => (
+    
+    
+    {
     ...route,
+    path: route.path==null?'':route.path,
+    component: route.component==null?'':modules[`../views/${route.component}/index.vue`],
     children: route.children ? transformRoutes(route.children) : []
-  }))
+  }
+
+))
 }
 
 // 路由守卫
@@ -165,8 +152,9 @@ router.beforeEach(async (to, from, next) => {
   } else {
 
     // 页面刷新重新添加动态路由信息
-    if (!to.name) {
+    if (!to.name&&!appStore.hasLoadedDynamicRoutes) {
       // 动态添加路由
+      console.log('页面刷新重新添加动态路由信息');
       await loadDynamicRoutes();
       next({ ...to, replace: true });
     }

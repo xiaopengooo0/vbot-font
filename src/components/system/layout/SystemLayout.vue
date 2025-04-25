@@ -1,5 +1,5 @@
 <template>
-    <div class="common-layout">
+    <div class="common-layout" :style="{'--theme-color': themeColor}">
       <el-container class="layout-container">
         <SideLayout />
         <el-container class="right-container">
@@ -11,12 +11,21 @@
   </template>
 
   <script setup lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
 
 const SystemLayout = defineComponent({
   name: 'SystemLayout',
 })
+
+const themeColor = computed(() => themeStore.themeColor)
+
+
+
+
 
 </script>
 
@@ -36,7 +45,8 @@ const SystemLayout = defineComponent({
 }
 
 .el-header {
-  background-color: #30b0b4;
+  background-color: var(--theme-color);
+
   color: white;
   text-align: center;
   line-height: 60px;

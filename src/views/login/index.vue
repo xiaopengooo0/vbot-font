@@ -96,7 +96,7 @@ const handleLogin = async () => {
     loading.value = true
     await loginFormRef.value.validate()
     
-    post('/login/admin', {
+    post('/admin/login', {
       username: loginForm.username,
       password: loginForm.password
     }).then((res:any) => {
@@ -110,8 +110,14 @@ const handleLogin = async () => {
             router.push('/')
           }
         })
-        token.setToken(res.data)
-        localStorage.setItem('token', res.data)
+        // console.log(res.data);
+        
+        token.setToken(res.data.token)
+        userStore.setToken(res.data.token)
+        userStore.setUserInfo(res.data.user)
+        userStore.setRoles(res.data.user,roles)
+        userStore.setPermissions(res.data.user,permissions)
+        localStorage.setItem('token', res.data.token)
 
       } else {
         ElMessage.error('登录失败')
